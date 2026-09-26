@@ -2,29 +2,67 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>WoT Database</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LZT WoT Database</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="container">
-    <header>
+  <div id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <div class="eyebrow">WORLD OF TANKS</div>
+      <h1>LZT WoT Database</h1>
+      <p class="subtitle">Panel jest dostępny tylko dla zalogowanych użytkowników.</p>
+      <form id="loginForm">
+        <label>E-mail<input id="loginEmail" type="email" autocomplete="username" required placeholder="admin@example.com"></label>
+        <label>Hasło<input id="loginPassword" type="password" autocomplete="current-password" required placeholder="••••••••"></label>
+        <button class="btn primary login-btn" type="submit">Zaloguj się</button>
+        <div id="loginStatus" class="status"></div>
+      </form>
+    </div>
+  </div>
+  <div id="appShell" class="app hidden">
+    <header class="topbar">
       <div>
-        <p class="eyebrow">WORLD OF TANKS</p>
-        <h1>WoT Database</h1>
-        <p class="subtitle">Baza danych kont odczytanych przez LZT WoT Reader.</p>
+        <div class="eyebrow">WORLD OF TANKS</div>
+        <h1>LZT WoT Database</h1>
+        <p class="subtitle">Prywatny panel bazy kont odczytanych z ogłoszeń LZT.market</p>
       </div>
-      <span class="status">● ONLINE</span>
+      <div class="top-actions">
+        <span id="userEmail" class="user-email"></span>
+        <button id="refreshBtn" class="btn primary">↻ Odśwież</button>
+        <button id="logoutBtn" class="btn">Wyloguj</button>
+      </div>
     </header>
-
-    <section class="search">
-      <input id="search" type="text" placeholder="Wpisz ID ogłoszenia..." autocomplete="off">
-      <button id="searchBtn">Szukaj</button>
+    <section class="stats" id="stats">
+      <div class="stat"><span>Kont w bazie</span><strong id="totalCount">—</strong></div>
+      <div class="stat"><span>Śr. winrate</span><strong id="avgWinrate">—</strong></div>
+      <div class="stat"><span>Łącznie bitew</span><strong id="totalBattles">—</strong></div>
+      <div class="stat"><span>Ostatnia aktualizacja</span><strong id="lastUpdate">—</strong></div>
     </section>
-
-    <section id="message" class="message">Wpisz ID i kliknij „Szukaj”.</section>
-    <section id="result" class="hidden"></section>
-  </main>
+    <section class="toolbar">
+      <input id="search" type="search" placeholder="Szukaj po ID, klanie lub nazwie czołgu...">
+      <select id="sort">
+        <option value="updated_desc">Najnowsze</option>
+        <option value="winrate_desc">Winrate ↓</option>
+        <option value="battles_desc">Bitwy ↓</option>
+        <option value="credits_desc">Kredyty ↓</option>
+        <option value="gold_desc">Złoto ↓</option>
+        <option value="tanks_desc">Czołgi ↓</option>
+      </select>
+      <label class="check"><input id="premiumOnly" type="checkbox"> Premium</label>
+    </section>
+    <div id="status" class="status">Ładowanie bazy...</div>
+    <main id="grid" class="grid"></main>
+    <div id="empty" class="empty hidden">Brak wyników.</div>
+  </div>
+  <div id="modal" class="modal hidden">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <article class="modal-card">
+      <button id="closeModal" class="close">×</button>
+      <div id="modalContent"></div>
+    </article>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
 </body>
 </html>
